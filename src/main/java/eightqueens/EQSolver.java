@@ -12,7 +12,7 @@ public class EQSolver {
         if(e == 1){
             fullSolutions.add(b);
         }else if(e != -1){ // If e != -1, get 8 more extensions and then solve them recursively
-            b.extend();
+            solve(new EQPartialSolutionBoard());
         }
         for(EQPartialSolutionBoard s : fullSolutions){
             System.out.println(s);
@@ -20,6 +20,6 @@ public class EQSolver {
     }
 
     public static void main(String[] args){
-        solve(new EQPartialSolutionBoard([1]));
+        solve(new EQPartialSolutionBoard());
     }
 }

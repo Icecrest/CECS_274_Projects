@@ -1,13 +1,14 @@
 package eightqueens;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class EQPartialSolutionBoard {
 
-    private Queen[] queens;
-    public EQPartialSolutionBoard(int numQ){
-        queens = new Queen[numQ];
+    private ArrayList<Queen> queens;
+    public EQPartialSolutionBoard(){
+        queens = new ArrayList<>();
     }
 
     /**
@@ -30,7 +31,7 @@ public class EQPartialSolutionBoard {
                 }
             }
         }
-        if(queens.length == 8){
+        if(queens.size() == 8){
             return 1;
         }
         return 0;
@@ -39,33 +40,38 @@ public class EQPartialSolutionBoard {
     /**
      * comes up with an array of 8 partial solution boards
      */
-    public EQPartialSolutionBoard[] extend (){
-        EQPartialSolutionBoard[] extensions = new EQPartialSolutionBoard[8];
+    public ArrayList<EQPartialSolutionBoard> extend (){
+        ArrayList<EQPartialSolutionBoard> extensions = new ArrayList<>();
+        int row;
+        if(queens.size() > 0){
+             row = this.queens.get(queens.size()-1).row;
+        }
+        else{
+            row = -1;
+        }
         for (int i = 0; i < 8; i++){
-            EQPartialSolutionBoard newBoard = new EQPartialSolutionBoard(queens.length+1);
+            EQPartialSolutionBoard newBoard = new EQPartialSolutionBoard();
             //1. Copy the Queens from this board to the new board
             //2. Add a new Queen one row above the one we just tested
             //3. Add the new board to the array
             newBoard.setQueens(this.queens);
-            addQueen(new Queen(i, queens[queens.length-2].col));
-
+            newBoard.addQueen(new Queen(row+1, i));
+            extensions.add(newBoard);
         }
 
         return extensions;
     }
 
-    public void setQueens(Queen[] queens){
-        for(int i  = 0; i < queens.length; i++){
-            this.queens[i] = queens[i];
-        }
+    public void setQueens(ArrayList<Queen> queens){
+        queens.addAll(this.queens);
     }
 
-    public void addQueen(Queen other){
-        this.queens[this.queens.length-1] = other;
+    public void addQueen(Queen q){
+        this.queens.add(q);
     }
 
     public String toString(){
-        return Arrays.toString(queens);
+        return queens.toString();
     }
 
 
